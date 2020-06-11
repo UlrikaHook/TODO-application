@@ -3,6 +3,8 @@
 
   // Add the Firebase products that you want to use
   import "firebase/firestore";
+
+  import "./style.css";
  
   
 
