@@ -1,11 +1,14 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-    entry: "./src/index.js",
+    entry: {
+        login : "./src/index.js",
+        main: "./src/main.js"
+    },
 
     output: {
         path: __dirname + '/dist', //Önskar förklaring på denna
-        filename: "bundle.js"
+        filename: "[name].bundle.js"
     },
 
     module: {
@@ -43,11 +46,14 @@ module.exports = {
     plugins: [
         new HtmlWebPackPlugin({
             template: "./src/index.html",
-            filename: "./index.html"
+            filename: "./index.html",
+            chunks: ["login"]
         }),
         new HtmlWebPackPlugin({
-            template: "./src/login.html",
-            filename: "./login.html"
+            template: "./src/main.html",
+            filename: "./main.html",
+            chunks: ["main"]
         })
+
     ]
 };

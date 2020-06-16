@@ -62,6 +62,15 @@ form{
     flex-direction: row;
 }
 
+.hidden-form{
+	display: none;
+}
+
+.displayed-form{
+    display: flex;
+    flex-direction: row;
+}
+
 input[type=text]{
     margin: 5px;
     border-radius: 3px;
