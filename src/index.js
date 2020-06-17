@@ -1,8 +1,11 @@
 import { db } from "./database.js"; 
-import { setId } from "./User.js";
 import "./style.css";
-import { getUser } from "./main.js"
-;
+
+/* Adds eventlistener to loginButton
+   Checks username and password in database
+   Redirect to main page if login succeded
+   Alerts "login failed" if login fails */
+
 const loginButton = document.querySelector("#login-button");
 const loginForm = document.querySelector("#login-form");
 
@@ -12,30 +15,11 @@ loginButton.addEventListener("click", async ()=>{
 
     const snapshot = await db.collection("users").where("username", "==", username).where("password", "==", password).get();
 
-    console.log(snapshot.docs.length);
     if(snapshot.docs.length === 0){
         console.log("login failed");
-        //alert("Login failed, try again");
+        alert("login failed");
     } else {
-        console.log(snapshot.docs[0].id);
-        setId(snapshot.docs[0].id);
-        getUser();
-        window.location.replace("main.html");
-        //loadMain();
-
-        
+        sessionStorage.setItem("userId", snapshot.docs[0].id);
+        location.replace("main.html");
     }
-
 });
-
-let loadMain = async () => {
-    let module = await import('./main');
-    module.run();
-}
-
-
-  // --- Login-fil ---
-  // Eventlistener för login-knapp:
-  // 1. Kolla om username och password finns i firestore
-  // 2. Om true, skapa user-objekt med id, länka till todo-site, id som param.
-  // 3. Om false, alert fel inloggningsuppgifter
