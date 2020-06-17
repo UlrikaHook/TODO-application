@@ -1,23 +1,41 @@
-  // Firebase App (the core Firebase SDK) is always required and must be listed first
-  import * as firebase from "firebase/app";
+import { db } from "./database.js"; 
+import { setId } from "./User.js";
+import "./style.css";
+import { getUser } from "./main.js"
+;
+const loginButton = document.querySelector("#login-button");
+const loginForm = document.querySelector("#login-form");
 
-  // Add the Firebase products that you want to use
-  import "firebase/firestore";
+loginButton.addEventListener("click", async ()=>{
+    const username = loginForm.username.value;
+    const password = loginForm.password.value;
 
-  import "./style.css";
- 
-  
+    const snapshot = await db.collection("users").where("username", "==", username).where("password", "==", password).get();
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyA3awhY038UzNUK_SL6KybCRmHAIsZPpeM",
-    authDomain: "todo-application-c4ca5.firebaseapp.com",
-    databaseURL: "https://todo-application-c4ca5.firebaseio.com",
-    projectId: "todo-application-c4ca5",
-    storageBucket: "todo-application-c4ca5.appspot.com",
-    messagingSenderId: "167021163406",
-    appId: "1:167021163406:web:9b8c8b7b2dfad77433eadf"
-  };
+    console.log(snapshot.docs.length);
+    if(snapshot.docs.length === 0){
+        console.log("login failed");
+        //alert("Login failed, try again");
+    } else {
+        console.log(snapshot.docs[0].id);
+        setId(snapshot.docs[0].id);
+        getUser();
+        window.location.replace("main.html");
+        //loadMain();
 
-   // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
+        
+    }
 
+});
+
+let loadMain = async () => {
+    let module = await import('./main');
+    module.run();
+}
+
+
+  // --- Login-fil ---
+  // Eventlistener för login-knapp:
+  // 1. Kolla om username och password finns i firestore
+  // 2. Om true, skapa user-objekt med id, länka till todo-site, id som param.
+  // 3. Om false, alert fel inloggningsuppgifter
