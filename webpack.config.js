@@ -1,15 +1,22 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const path = require("path");
 
 module.exports = {
+
+    /* Two entries, one bundle for each html-file*/
     entry: {
         login : "./src/index.js",
         main: "./src/main.js"
     },
 
+    devtool: "none",
+
     output: {
-        path: __dirname + '/dist', //Önskar förklaring på denna
+        path: path.resolve(__dirname, "dist"),
         filename: "[name].bundle.js"
     },
+
 
     module: {
         rules: [
@@ -44,6 +51,10 @@ module.exports = {
         ]
     },
     plugins: [
+        new CleanWebpackPlugin(),
+
+        /* One html-webpac-plugin for each html-file
+           Uses different chunks / entries / bundles */
         new HtmlWebPackPlugin({
             template: "./src/index.html",
             filename: "./index.html",
@@ -53,7 +64,6 @@ module.exports = {
             template: "./src/main.html",
             filename: "./main.html",
             chunks: ["main"]
-        })
-
+        }),
     ]
 };

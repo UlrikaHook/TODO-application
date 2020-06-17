@@ -1,3 +1,5 @@
+
+/* Holds firebaseConfig object with keys */
 export const firebaseConfig = {
     apiKey: "AIzaSyA3awhY038UzNUK_SL6KybCRmHAIsZPpeM",
     authDomain: "todo-application-c4ca5.firebaseapp.com",
